@@ -1,6 +1,6 @@
 # DS4200 Final Project
 
-Link to GitHub Pages: `[insert your hyperlink here](insert your hyperlink here)`
+Link to GitHub Pages: [https://ds4200-s23-class.github.io/project-nick-nino-krish/]
 
 Clone this repo and work locally. Be sure to push the final version of your code (and any significant updates along the way) before submitting. To work locally, you will need to set up a Python Simple Server. Instructions for this are included below.  
 
@@ -14,15 +14,17 @@ The purpose of this assignment is to practice the entire pipeline of developing 
 
 1. Resources to support this assignment are provided in the Resources section below.  
 
-1. Create a GitHub Page for your repo and add the link to your GitHub Page above where you see `[insert your hyperlink here](insert your hyperlink here)` (if you put the link inside of the `[]` and the `()` you will get a clickable hyperlink). 
+2. Create a GitHub Page for your repo and add the link to your GitHub Page above where you see [https://ds4200-s23-class.github.io/project-nick-nino-krish/](https://ds4200-s23-class.github.io/project-nick-nino-krish/)
 
-1. The index.html file included in this repo outlines the major sections required for the website hosting your final project visualization tool. You may add additional styling, but do not delete any sections as we will check and grade all of them after your final submission at the end of the semester. You will not fill in all sections right away, each of the following project milestones will specify which sections you are expected to work on. 
+(if you put the link inside of the `[]` and the `()` you will get a clickable hyperlink). 
 
-1. All styling should be done via an *external* stylesheet (no styling should be done inline). 
+3. The index.html file included in this repo outlines the major sections required for the website hosting your final project visualization tool. You may add additional styling, but do not delete any sections as we will check and grade all of them after your final submission at the end of the semester. You will not fill in all sections right away, each of the following project milestones will specify which sections you are expected to work on. 
 
-1. All js should be included via an *external* javascript file (no javascript code should be included in your html file).   
+4. All styling should be done via an *external* stylesheet (no styling should be done inline). 
 
-1. Please see the project overview and pm assignments for specific assignment requirements. 
+5. All js should be included via an *external* javascript file (no javascript code should be included in your html file).   
+
+6. Please see the project overview and pm assignments for specific assignment requirements. 
 
 ## Python Simple Server
 
