@@ -4,7 +4,7 @@
 <head>
     <meta charset=utf-8/>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <title>Spotify Listening Data Project</title>
 </head>
 
@@ -46,12 +46,37 @@
         <h2>Visualization</h2>
         TODO: Build your visualization tool here
     </div>
-    <h1>Simple Bar Chart Example</h1>
-	<div style="width: 200px; height: 100px; border: 1px solid black;">
-		<div style="height: 50px; background-color: blue;"></div>
-		<div style="height: 30px; background-color: green;"></div>
-		<div style="height: 20px; background-color: red;"></div>
-	</div>
+  <div id="myPlot"></div>
+  <script>
+    Plotly.d3.csv("https://raw.githubusercontent.com/DS4200-S23-Class/project-nick-nino-krish/master/data/playlist.csv", function(err, rows){
+      function unpack(rows, key) {
+        return rows.map(function(row) { return row[key]; });
+      }
+
+      var trace1 = {
+        x: unpack(rows, 'popularity'),
+        y: unpack(rows, 'date'),
+        mode: 'markers',
+        type: 'scatter'
+      };
+
+      var data = [trace1];
+
+      var layout = {
+        title: 'Playlist Scatterplot',
+        xaxis: {
+          title: 'Popularity'
+        },
+        yaxis: {
+          title: 'Date'
+        }
+      };
+
+      Plotly.newPlot('myPlot', data, layout);
+    });
+  </script>
+	
+	
     <div>
         <h2>Acknowledgements</h2>
         TODO: Cite resources used here   
