@@ -54,8 +54,8 @@
       }
 
       var trace1 = {
-        x: unpack(rows, 'popularity'),
-        y: unpack(rows, 'date'),
+        x: unpack(rows, 'date'),
+        y: unpack(rows, 'popularity'),
         mode: 'markers',
         type: 'scatter'
       };
@@ -63,12 +63,12 @@
       var data = [trace1];
 
       var layout = {
-        title: 'Playlist Scatterplot',
+        title: 'Popularity of All Songs over Time',
         xaxis: {
-          title: 'Popularity'
+          title: 'Date'
         },
         yaxis: {
-          title: 'Date'
+          title: 'Popularity'
         }
       };
 
