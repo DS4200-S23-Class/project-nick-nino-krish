@@ -51,7 +51,7 @@ VIS1.append("text")
 .text("Spotify Playlist Metrics");
 
 
-d3.csv("/data/playlist_metrics.csv").then((data) => {
+d3.csv("data/playlist_metrics.csv").then((data) => {
 
     var tooltip = d3.select("#vis1")
     .append("div")
@@ -196,7 +196,6 @@ function zoomed() {
 
 }
 });
-
 
 
 };
