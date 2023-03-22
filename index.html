@@ -54,7 +54,7 @@
       }
 
       var trace1 = {
-        x: unpack(rows, 'date'),
+        x: unpack(rows, 'country'),
         y: unpack(rows, 'popularity'),
         mode: 'markers',
         type: 'scatter'
@@ -65,7 +65,7 @@
       var layout = {
         title: 'Popularity of All Songs over Time',
         xaxis: {
-          title: 'Date'
+          title: 'country'
         },
         yaxis: {
           title: 'Popularity'
