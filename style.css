@@ -5,3 +5,18 @@ body {
 h1 {
     text-align: center;
 }
+
+#frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#vis1 {
+    display: flex;
+}
+
+.tootlip { 
+    position: absolute;
+}

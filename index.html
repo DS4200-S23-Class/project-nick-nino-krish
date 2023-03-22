@@ -5,6 +5,8 @@
     <meta charset=utf-8/>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="script.js"></script>
     <title>Spotify Listening Data Project</title>
 </head>
 
@@ -41,45 +43,16 @@
 
           
     </div>
+    <h2>Visualization</h2>
 
-    <div>
-        <h2>Visualization</h2>
-        NINO TODO: Build your Visual Encoding #1 here
-    </div>
-  <div id="myPlot"></div>
-  <script>
-    Plotly.d3.csv("https://raw.githubusercontent.com/DS4200-S23-Class/project-nick-nino-krish/master/data/playlist.csv", function(err, rows){
-      function unpack(rows, key) {
-        return rows.map(function(row) { return row[key]; });
-      }
-
-      var trace1 = {
-        x: unpack(rows, 'country'),
-        y: unpack(rows, 'popularity'),
-        mode: 'markers',
-        type: 'scatter'
-      };
-
-      var data = [trace1];
-
-      var layout = {
-        title: 'Scatterplot of Popularity of All Songs from Every Country',
-        xaxis: {
-          title: 'country'
-        },
-        yaxis: {
-          title: 'Popularity'
-        }
-      };
-
-      Plotly.newPlot('myPlot', data, layout);
-    });
-  </script>
-	
-	
+    <div id="frame">
+      <div id="vis1"> </div>
+      <div id="vis2"></div>
+  </div>
     <div>
         <h2>Acknowledgements</h2>
-        TODO: Cite resources used here   
+        <p>Plotly.js W3 Schools <a href="https://www.w3schools.com/js/js_graphics_plotly.asp">https://www.w3schools.com/js/js_graphics_plotly.asp</a></p>
+        <p>Console.log <a href="https://www.w3schools.com/jsref/met_console_log.asp">https://www.w3schools.com/jsref/met_console_log.asp</a></p> 
     </div>
 <script type="text/javascript" src="js/main.js"></script>
 
