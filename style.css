@@ -8,15 +8,29 @@ h1 {
 
 #frame {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-
 }
 
-#vis1 {
-    display: flex;
-}
 
 .tootlip { 
     position: absolute;
+}
+/*
+
+add padding to vis2 
+*/
+
+#vis2 {
+    padding-left: 50px;
+    padding-bottom: 100px;
+}
+
+
+/* Make both vis stack on top of each other on smaller screens */
+
+@media (max-width: 600px) {
+    #vis1, #vis2 {
+        flex-direction: column;
+    }
 }

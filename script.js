@@ -1,8 +1,8 @@
 window.onload = function() {
 const FRAME_HEIGHT = 600;
-const FRAME_WIDTH = 900; 
+const FRAME_WIDTH = 800; 
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
-const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom;
+const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top;
 const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right; 
 
 const VIS1 = d3.select("#vis1")
@@ -12,6 +12,13 @@ const VIS1 = d3.select("#vis1")
     .append("g")
 
 
+  const VIS2 = d3.select("#vis2")
+  .append("svg")
+  .attr("width", FRAME_WIDTH)
+  .attr("height", FRAME_HEIGHT)
+  .append("g")
+
+
 function draw_bubble() {
 
     
@@ -19,11 +26,11 @@ function draw_bubble() {
         // Define the scales
 const xScale = d3.scaleLinear()
 .domain([0, 1]) // Set the domain for danceability
-.range([50, FRAME_WIDTH - 50]); // Set the range for the X-axis
+.range([MARGINS.left, FRAME_WIDTH]); // Set the range for the X-axis
 
 const yScale = d3.scaleLinear()
 .domain([0, 1]) // Set the domain for energy
-.range([FRAME_HEIGHT - 50, 50]); // Set the range for the Y-axis
+.range([VIS_HEIGHT - 50, 50]); // Set the range for the Y-axis
 
 const sizeScale = d3.scaleLinear()
 .domain([0, 100]) // Set the domain for popularity
@@ -35,7 +42,7 @@ const yAxis = d3.axisLeft(yScale);
 
 // Add the axes to the visualization
 VIS1.append("g")
-.attr("transform", `translate(0, ${FRAME_HEIGHT - 50})`)
+.attr("transform", `translate(0, ${VIS_HEIGHT - 50})`)
 .call(xAxis);
 
 VIS1.append("g")
@@ -44,10 +51,10 @@ VIS1.append("g")
 
 // Add the title
 VIS1.append("text")
-.attr("x", FRAME_WIDTH / 2)
-.attr("y", 30)
+.attr("x", VIS_WIDTH / 2)
+.attr("y", MARGINS.top / 2)
 .attr("text-anchor", "middle")
-.attr("font-size", "20px")
+.attr("font-size", "25px")
 .text("Spotify Playlist Metrics");
 
 
@@ -71,6 +78,7 @@ d3.csv("data/playlist_metrics.csv").then((data) => {
           .style("opacity", 1)
           .html("Country: " + d.country)
           .style("left", (d3.mouse(this)) + "px")
+          .style("top", (d3.mouse(this)) + "px")
       }
       var moveTooltip = function(d) {
         tooltip
@@ -103,19 +111,19 @@ VIS1.selectAll("circle")
 
 
 VIS1.append("text")
-.attr("x", FRAME_WIDTH / 2)
-.attr("y", FRAME_HEIGHT - 10)
+.attr("x", VIS_WIDTH / 2)
+.attr("y", VIS_HEIGHT - 10)
 .attr("text-anchor", "middle")
-.attr("font-size", "12px")
+.attr("font-size", "15px")
 .text("Danceability");
 
 VIS1.append("text")
 .attr("transform", "rotate(-90)")
 .attr("y", 0)
-.attr("x", 0 - (FRAME_HEIGHT / 2))
+.attr("x", 0 - (VIS_HEIGHT / 2))
 .attr("dy", "1em")
 .attr("text-anchor", "middle")
-.attr("font-size", "12px")
+.attr("font-size", "15px")
 .text("Energy");
 
 
@@ -195,51 +203,184 @@ function zoomed() {
     .on("mouseleave", hideTooltip )
 
 }
+
+VIS1.selectAll("text")
+.attr("font-family", "segoue ui")
+
 });
 
 
 };
 
-function drawplot() {
-    Plotly.d3.csv("https://raw.githubusercontent.com/DS4200-S23-Class/project-nick-nino-krish/master/data/playlist.csv", function(err, rows){
-        function unpack(rows, key) {
-          return rows.map(function(row) { return row[key]; });
-        }
-  
-        const trace1 = {
-          x: unpack(rows, 'country'),
-          y: unpack(rows, 'popularity'),
-          mode: 'markers',
-          type: 'scatter'
-        };
-  
-        const data = [trace1];
-  
-        const layout = {
-          title: 'Scatterplot of Popularity of All Songs from Every Country',
-          xaxis: {
-            title: 'country'
-          },
-          yaxis: {
-            title: 'Popularity'
-          }
-        };
-  
-        Plotly.newPlot('vis2', data, layout);
-      });
-  
-  
-  fetch('https://raw.githubusercontent.com/DS4200-S23-Class/project-nick-nino-krish/master/data/playlist.csv')
-    .then(response => response.text())
-    .then(data => {
-      const lines = data.split('\n');
-      for (let i = 0; i < 15; i++) {
-        console.log(lines[i]);
+function drawbar() {
+
+  // line this vis up with the other vis
+
+
+
+
+
+d3.csv("data/playlist_median.csv").then((data) => {
+
+  var subgroups = data.columns.slice(2, -1)
+  console.log(subgroups)
+
+  // add 5 colors, muted and dark
+  var color = d3.scaleOrdinal()
+    .domain(subgroups)
+    .range(['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f'])
+
+
+  var x = d3.scaleBand()
+    .domain(data.map(function(d) { return d.country; }))
+    .range([MARGINS.left, FRAME_WIDTH])
+    .padding([0.2])
+
+  var y = d3.scaleLinear()
+    .domain([0, 3])
+    .range([ VIS_HEIGHT, 0 ]);
+
+    VIS2.append("g")
+    .attr("transform", "translate(0," + VIS_HEIGHT + ")")
+    .select(".domain").remove()
+
+  var stackedData = d3.stack()
+    .keys(subgroups)
+    (data)
+
+  VIS2.append("g")
+    .selectAll("g")
+    .data(stackedData)
+    .enter().append("g")
+      .attr("fill", function(d) { return color(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return x(d.data.country); })
+      .attr("y", function(d) { return y(d[1]); })
+      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      .attr("width",x.bandwidth())
+
+  var legend = VIS2.append("g")
+    .attr("font-family", "segoue ui")
+    .attr("font-size", 10)
+    .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(subgroups.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", VIS_WIDTH)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", color);
+
+  legend.append("text")
+      .attr("x", VIS_WIDTH - 10)
+      .attr("y", 9.5)
+      .attr("dy", "0.34em")
+      
+      .text(function(d) { return d; });
+
+      //make text larger, and a nice font
+      VIS2.selectAll("text")
+      .attr("font-size", "18px")
+      .attr("font-family", "segoue ui")
+
+
+      //add a title
+      VIS2.append("text")
+      .attr("x", (VIS_WIDTH / 2))
+      .attr("y", MARGINS.top / 2 )
+      .attr("text-anchor", "middle")
+      .attr("font-size", "24px")
+      .attr("font-family", "segoue ui")
+      .text("Median Values of Audio Features by Country");
+
+      //add x axis label
+      VIS2.append("text")
+      .attr("x", (VIS_WIDTH / 2))
+      .attr("y", VIS_HEIGHT + (MARGINS.top / 2))
+      .attr("text-anchor", "middle")
+      .attr("font-size", "18px")
+      .attr("font-family", "segoue ui")
+      .text("Country");
+
+      //add y axis label
+      VIS2.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0)
+      .attr("x", 0 - (VIS_HEIGHT / 2)) 
+      .attr("dy", "1em")
+      .attr("text-anchor", "middle")
+      .attr("font-size", "18px")
+      .attr("font-family", "segoue ui")
+      .text("Median Value of Audio Feature");
+
+      //add a subtitle
+      VIS2.append("text")
+      .attr("x", (VIS_WIDTH / 2))
+      .attr("y", 0 - (VIS_HEIGHT / 4))
+      .attr("text-anchor", "middle")
+      .attr("font-size", "18px")
+      .attr("font-family", "segoue ui")
+      .text("Hover over a bar to see the median value of each audio feature");
+
+      //add tooltip that shows the median value of each audio feature and the country
+
+      var tooltip = d3.select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("z-index", "10")
+      .style("visibility", "hidden")
+      .style("background-color", "white")
+      .style("border", "solid")
+      .style("border-width", "1px")
+      .style("border-radius", "5px")
+      .style("padding", "10px")
+      .text("a simple tooltip");
+
+      function showTooltip(d) {
+        tooltip.style("visibility", "visible");
       }
-    });
+
+      function moveTooltip(d) {
+        tooltip
+          .style("top", (d3.event.pageY-10)+"px")
+          .style("left",(d3.event.pageX+10)+"px")
+
+      }
+
+      function hideTooltip(d) {
+        tooltip.style("visibility", "hidden");
+      }
+
+      //add tooltip to each bar and shows the median value of the feature that is being hovered over, by group
+
+
+      VIS2.selectAll("rect")
+      .on("mouseover", function(d) {
+        tooltip.text("Country: " + d.data.country)
+        // new line 
+        tooltip.append("div").text("Danceability: " + d.data.danceability)
+        tooltip.append("div").text("Energy: " + d.data.energy)
+        tooltip.append("div").text("Acousticness: " + d.data.acousticness)
+        tooltip.append("div").text("Instrumentalness: " + d.data.valence)
+      
+        showTooltip(d);
+        moveTooltip(d);
+      })
+      .on("mouseout", function(d) {
+        hideTooltip(d);
+      });
+
+
+});
 }
 
+
 draw_bubble();
-drawplot();
+drawbar();
 
 };
