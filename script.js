@@ -1,6 +1,6 @@
 window.onload = function() {
-const FRAME_HEIGHT = 500;
-const FRAME_WIDTH = 700; 
+const FRAME_HEIGHT = 600;
+const FRAME_WIDTH = 900; 
 const MARGINS = {left: 50, right: 50, top: 50, bottom: 50};
 const VIS_HEIGHT = FRAME_HEIGHT - MARGINS.top - MARGINS.bottom;
 const VIS_WIDTH = FRAME_WIDTH - MARGINS.left - MARGINS.right; 
