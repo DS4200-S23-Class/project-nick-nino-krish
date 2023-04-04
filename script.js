@@ -40,6 +40,11 @@ const sizeScale = d3.scaleLinear()
 const xAxis = d3.axisBottom(xScale);
 const yAxis = d3.axisLeft(yScale);
 
+const opacityScale = d3.scaleLinear()
+.domain([50, 250]) // Set the domain for tempo
+.range([0.1, 1]); // Set the range for the bubble opacity
+
+
 // Add the axes to the visualization
 VIS1.append("g")
 .attr("transform", `translate(0, ${VIS_HEIGHT - 50})`)
@@ -101,7 +106,7 @@ VIS1.selectAll("circle")
 .attr("cy", (d) => yScale(d.energy))
 .attr("r", (d) => sizeScale(d.popularity))
 .attr("fill", "blue")
-.attr("opacity", 0.5)
+.attr("opacity", (d) => opacityScale(d.tempo))
 .attr("stroke", "black")
 .attr("stroke-width", 1)
 .on("mouseover", showTooltip )
@@ -132,7 +137,7 @@ VIS1.append("circle")
 .attr("cx", 70)
 .attr("cy", 48)
 .attr("r", 5)
-.attr("fill", "blue")
+.attr("fill", "none")
 .attr("opacity", 0.5)
 .attr("stroke", "black")
 .attr("stroke-width", 1)
@@ -148,10 +153,12 @@ VIS1.append("circle")
 .attr("cx", 70)
 .attr("cy", 67)
 .attr("r", 2)
-.attr("fill", "blue")
+.attr("fill", "none")
 .attr("opacity", 0.5)
 .attr("stroke", "black")
 .attr("stroke-width", 1)
+
+//add opacity legend
 
 VIS1.append("text")
 .attr("x", 80)
@@ -160,11 +167,47 @@ VIS1.append("text")
 .attr("font-size", "12px")
 .text("Less popular");
 
+VIS1.append("circle")
+.attr("cx", 70)
+.attr("cy", 90)
+.attr("r", 4)
+.attr("fill", "blue")
+.attr("opacity", 0.9)
+.attr("stroke", "black")
+.attr("stroke-width", 1)
+
+VIS1.append("text")
+.attr("x", 80)
+.attr("y", 92)
+.attr("text-anchor", "left")
+.attr("font-size", "12px")
+.text("More tempo");
+
+VIS1.append("circle")
+.attr("cx", 70)
+.attr("cy", 110)
+.attr("r", 4)
+.attr("fill", "blue")
+.attr("opacity", 0.2)
+.attr("stroke", "black")
+.attr("stroke-width", 1)
+
+
+VIS1.append("text")
+.attr("x", 80)
+.attr("y", 113)
+.attr("text-anchor", "left")
+.attr("font-size", "12px")
+.text("Less tempo");
+
+
+
+
 VIS1.append("rect")
 .attr("x", 60)
 .attr("y", 35)
 .attr("width", 100)
-.attr("height", 40)
+.attr("height", 90)
 .attr("fill", "none")
 .attr("stroke", "black")
 .attr("stroke-width", 1)
@@ -215,10 +258,6 @@ VIS1.selectAll("text")
 function drawbar() {
 
   // line this vis up with the other vis
-
-
-
-
 
 d3.csv("data/playlist_median.csv").then((data) => {
 
