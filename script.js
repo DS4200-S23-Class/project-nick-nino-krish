@@ -65,7 +65,7 @@ VIS1.append("text")
 
 d3.csv("data/playlist_metrics.csv").then((data) => {
 
-    var tooltip = d3.select("#vis1")
+    const tooltip = d3.select("#vis1")
     .append("div")
       .style("opacity", 0)
       .attr("class", "tooltip")
@@ -75,7 +75,7 @@ d3.csv("data/playlist_metrics.csv").then((data) => {
       .style("padding", "10px")
       .style("color", "white")
 
-    var showTooltip = function(d) {
+    const showTooltip = function(d) {
         tooltip
           .transition()
           .duration(200)
@@ -85,11 +85,11 @@ d3.csv("data/playlist_metrics.csv").then((data) => {
           .style("left", (d3.mouse(this)) + "px")
           .style("top", (d3.mouse(this)) + "px")
       }
-      var moveTooltip = function(d) {
+      const moveTooltip = function(d) {
         tooltip
           .style("left", (d3.mouse(this)) + "px")
       }
-      var hideTooltip = function(d) {
+      const hideTooltip = function(d) {
         tooltip
           .transition()
           .duration(200)
@@ -218,7 +218,7 @@ VIS1.append("rect")
 
 // create a zoom function that only works with the scrool wheel
 
-var zoom = d3.zoom()
+const zoom = d3.zoom()
 .scaleExtent([1, 10])
 .on("zoom", zoomed);
 
@@ -226,8 +226,8 @@ var zoom = d3.zoom()
 VIS1.call(zoom);
 
 function zoomed() {
-    var new_xScale = d3.event.transform.rescaleX(xScale);
-    var new_yScale = d3.event.transform.rescaleY(yScale);
+    const new_xScale = d3.event.transform.rescaleX(xScale);
+    const new_yScale = d3.event.transform.rescaleY(yScale);
 
     xAxis.scale(new_xScale);
     yAxis.scale(new_yScale);
@@ -264,21 +264,21 @@ function drawbar() {
 
 d3.csv("data/playlist_median.csv").then((data) => {
 
-  var subgroups = data.columns.slice(2, -1)
+  const subgroups = data.columns.slice(2, -1)
   console.log(subgroups)
 
   // add 5 colors, muted and dark
-  var color = d3.scaleOrdinal()
+  const color = d3.scaleOrdinal()
     .domain(subgroups)
     .range(['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f'])
 
 
-  var x = d3.scaleBand()
+  const x = d3.scaleBand()
     .domain(data.map(function(d) { return d.country; }))
     .range([MARGINS.left, FRAME_WIDTH])
     .padding([0.2])
 
-  var y = d3.scaleLinear()
+  const y = d3.scaleLinear()
     .domain([0, 3])
     .range([ VIS_HEIGHT, 0 ]);
 
@@ -286,7 +286,7 @@ d3.csv("data/playlist_median.csv").then((data) => {
     .attr("transform", "translate(0," + VIS_HEIGHT + ")")
     .select(".domain").remove()
 
-  var stackedData = d3.stack()
+  const stackedData = d3.stack()
     .keys(subgroups)
     (data)
 
@@ -305,7 +305,7 @@ d3.csv("data/playlist_median.csv").then((data) => {
       .attr("id", (d) => "bar-" + d.data.country.replace(/\s+/g, ''))
 
 
-  var legend = VIS2.append("g")
+  const legend = VIS2.append("g")
     .attr("font-family", "segoue ui")
     .attr("font-size", 10)
     .attr("text-anchor", "end")
@@ -373,7 +373,7 @@ d3.csv("data/playlist_median.csv").then((data) => {
 
       //add tooltip that shows the median value of each audio feature and the country
 
-      var tooltip = d3.select("body")
+      const tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
       .style("z-index", "10")
