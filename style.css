@@ -12,6 +12,10 @@ h1 {
     align-items: center;
 }
 
+.highlight {
+    stroke: red !important;
+    stroke-width: 3px !important;
+  }
 
 .tootlip { 
     position: absolute;
@@ -26,6 +30,10 @@ add padding to vis2
     padding-bottom: 100px;
 }
 
+.selected {
+    stroke: red !important;
+    stroke-width: 3px !important;
+  }
 
 /* Make both vis stack on top of each other on smaller screens */
 

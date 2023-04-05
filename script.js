@@ -109,10 +109,13 @@ VIS1.selectAll("circle")
 .attr("opacity", (d) => opacityScale(d.tempo))
 .attr("stroke", "black")
 .attr("stroke-width", 1)
+.attr("id", (d) => "scatterplot-" + d.country.replace(/\s+/g, ''))
 .on("mouseover", showTooltip )
 .on("mouseover", showTooltip )
 .on("mousemove", moveTooltip )
 .on("mouseleave", hideTooltip )
+.on("click", function(d) { handleElementClick(d3.select(this), "scatterplot"); });
+
 
 
 VIS1.append("text")
@@ -299,6 +302,8 @@ d3.csv("data/playlist_median.csv").then((data) => {
       .attr("y", function(d) { return y(d[1]); })
       .attr("height", function(d) { return y(d[0]) - y(d[1]); })
       .attr("width",x.bandwidth())
+      .attr("id", (d) => "bar-" + d.data.country.replace(/\s+/g, ''))
+
 
   var legend = VIS2.append("g")
     .attr("font-family", "segoue ui")
@@ -412,10 +417,23 @@ d3.csv("data/playlist_median.csv").then((data) => {
       })
       .on("mouseout", function(d) {
         hideTooltip(d);
-      });
+      })
+      .on("click", function(d) { handleElementClick(d3.select(this), "bar"); });
+;
 
 
 });
+}
+
+function handleElementClick(element, visType) {
+  d3.selectAll(".highlight").classed("highlight", false);
+  element.classed("highlight", true);
+
+  let id = element.attr("id");
+  let otherVisType = visType === "scatterplot" ? "bar" : "scatterplot";
+  let otherId = id.replace(visType, otherVisType);
+
+  d3.select("#" + otherId).classed("highlight", true);
 }
 
 
